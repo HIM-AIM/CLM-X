@@ -3,16 +3,11 @@
 
 import math
 
-import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from fairscale.nn import checkpoint_wrapper, wrap
-try:
-    from apex.normalization import FusedLayerNorm as LayerNorm
-except ModuleNotFoundError:
-    from torch.nn import LayerNorm
 
+from torch.nn import LayerNorm
 from models.multiway_network import MultiwayWrapper, set_split_position
 
 

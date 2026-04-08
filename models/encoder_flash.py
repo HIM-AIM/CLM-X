@@ -7,15 +7,11 @@ import torch
 import torch.nn.functional as F
 from torch import nn
 
-try:
-    from apex.normalization import FusedLayerNorm as LayerNorm
-except ModuleNotFoundError:
-    from torch.nn import LayerNorm
+
 
 from einops import rearrange
-from flash_attn import flash_attn_func
 from flash_attn.flash_attn_interface import flash_attn_varlen_qkvpacked_func
-from flash_attn.bert_padding import unpad_input, pad_input, index_first_axis
+from flash_attn.bert_padding import unpad_input, pad_input
 
 from models.multiway_network import MultiwayWrapper, set_split_position
 
