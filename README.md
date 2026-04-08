@@ -12,7 +12,6 @@ To install requirements:
 ```setup
 conda create --name clmx  -c pyg -c pytorch -c nvidia -c xformers -c conda-forge -c bioconda 'python==3.10' 'pytorch-cuda==12.1' 'pytorch==2.1.2' torchtriton torchvision cudatoolkit xformers nccl py-opencv
 conda activate clmx
-conda install -c conda-forge deepspeed
 conda install -c bioconda scvi-tools
 conda install pandas numba scipy seaborn pyarrow scikit-learn poetry numpy
 conda install -c conda-forge scanpy==1.10.2
@@ -27,9 +26,6 @@ pip install sacred -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install wandb -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install einops -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install flash-attn==2.5.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install scglue -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install snapatac2 -i https://pypi.tuna.tsinghua.edu.cn/simple
-
 
 ```
 
