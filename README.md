@@ -25,7 +25,6 @@ pip install datasets -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install torchtext -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install sacred -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install wandb -i https://pypi.tuna.tsinghua.edu.cn/simple
-pip install apex -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install einops -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install flash-attn==2.5.8 -i https://pypi.tuna.tsinghua.edu.cn/simple
 pip install scglue -i https://pypi.tuna.tsinghua.edu.cn/simple
