@@ -88,7 +88,6 @@ def rna_inference(args):
     # init logger
     logger = init_logger(args)
 
-    # 定义数据集和模型
     adata_obs, dataloader, rna_vocab_size, atac_vocab_size = prepare_rna_inference_data(
         args
     )
