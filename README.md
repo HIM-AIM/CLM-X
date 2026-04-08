@@ -10,8 +10,8 @@ This repository is the official implementation of CLM-X: A multimodal single-cel
 To install requirements:
 
 ```setup
-conda create --name CLM-access  -c pyg -c pytorch -c nvidia -c xformers -c conda-forge -c bioconda 'python==3.10' 'pytorch-cuda==12.1' 'pytorch==2.1.2' torchtriton torchvision cudatoolkit xformers nccl py-opencv
-conda activate CLM-access
+conda create --name clmx  -c pyg -c pytorch -c nvidia -c xformers -c conda-forge -c bioconda 'python==3.10' 'pytorch-cuda==12.1' 'pytorch==2.1.2' torchtriton torchvision cudatoolkit xformers nccl py-opencv
+conda activate clmx
 conda install -c conda-forge deepspeed
 conda install -c bioconda scvi-tools
 conda install pandas numba scipy seaborn pyarrow scikit-learn poetry numpy
