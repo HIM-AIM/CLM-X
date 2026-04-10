@@ -14,9 +14,7 @@ from lightning.pytorch.callbacks import LearningRateMonitor, ModelCheckpoint
 from lightning.pytorch.loggers import WandbLogger
 from torch.utils.data import DataLoader, Dataset, random_split
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "1,2"
 os.environ["TORCH_DISTRIBUTED_TIMEOUT"] = "36000"
-os.environ["WANDB_MODE"] = "disabled"
 
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
