@@ -355,10 +355,7 @@ def create_dataloader(
 
 
 def create_dataset_by_split(args, is_train=True):
-    """
-    根据指定的任务类型和训练状态创建训练和验证数据集加载器。
-    按 9:1 的比例划分数据集为训练集和验证集。
-    """
+
 
     logger.info("Prepare dataset")
     dataset, rna_vocab_size, atac_vocab_size = prepare_dataloader(args)
@@ -394,3 +391,26 @@ def create_dataset_by_split(args, is_train=True):
     )
 
     return train_dataloader, val_dataloader, rna_vocab_size, atac_vocab_size
+
+def create_perturbation_dataset(args, is_train=True):
+
+    logger.info("Prepare dataset")
+    dataset, rna_vocab_size, atac_vocab_size = prepare_dataloader(args)
+
+    total_size = len(dataset)
+
+
+    logger.info(f"Splitting dataset: {total_size} test samples")
+
+
+    logger.info("Convert test dataset to dataloader")
+    test_dataloader = create_dataloader(
+        dataset,
+        is_train=False,
+        batch_size=args.batch_size,
+        num_workers=args.num_workers,
+        pin_mem=args.pin_mem,
+        dist_eval=args.dist_eval,
+    )
+
+    return test_dataloader, rna_vocab_size, atac_vocab_size
