@@ -106,15 +106,11 @@ def infer_rna_atac_fusion():
     rna_dataset_path = "../data/finetune/fusion/dataset5/batch1/rna_batch1.dataset"
 
 
-    embedding_modality = "rna" #  "mix"  "atac"  "rna"
+    embedding_modality = "mix"
     model_task = "inference"
     input_mod = "RNA + ATAC"
-    tokenization_style = "rna"
     # tokenize settings
 
-    context_length = 2000
-    tokenize_batch_size = 50000
-    append_cls = True
     context_length = 2000  # 2000  5000
     peak_length = 600    # 600   256
     pad_id = 1999   # 1999  4999
@@ -151,12 +147,10 @@ def infer_rna_atac_batch():
     rna_dataset_path = "../data/finetune/batch_correction/dataset1-4/rna_data.dataset"
     model_task = "inference"
     input_mod = "RNA + ATAC"
-    tokenization_style = "rna"
     atac_rna_cls = True
     rna_cls = False
-    context_length = 2000
-    tokenize_batch_size = 50000
-    append_cls = True
+    embedding_modality = "mix"
+
     context_length = 2000  # 2000  5000
     peak_length = 600  # 600   256
     pad_id = 1999  # 1999  4999
@@ -189,7 +183,11 @@ def infer_rna_perturbation():
     train_h5ad = "../data/finetune/perturbation/replogle_k562_essential/train_data.h5ad"
     rna_dataset_path = "../data/finetune/perturbation/replogle_k562_essential/test"
 
-    # rna_vocab_file = None
     model_task = "inference"
     input_mod = "RNA"
     # RNA preprocess settings
+    context_length = 2000  # 2000  5000
+    peak_length = 600  # 600   256
+    pad_id = 1999  # 1999  4999
+    mask_id = 1998  # 1998 4998
+    val_ration = 1
