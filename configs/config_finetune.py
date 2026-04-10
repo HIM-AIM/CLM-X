@@ -72,6 +72,7 @@ def config():
     load_path = ""
     num_workers = 8
     precision = 16
+    max_epoch = 50
 
     pin_mem = True
     max_steps = 1000000 # 339420 // batch_size * max_epoch // num_gpus  # for one gpu, 3 epoch, need //num_gpus
