@@ -3,7 +3,6 @@ import sys
 import dotmap
 
 # set gpu number
-os.environ["CUDA_VISIBLE_DEVICES"] = "2"
 os.environ["WANDB_MODE"] = "disabled"
 import pickle
 import lightning as pl
