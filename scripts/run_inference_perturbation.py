@@ -19,7 +19,7 @@ from cellstory.utils import convert_to_path
 from cellstory.logger import init_logger
 
 # import experiment
-from configs.config_eval_test import ex
+from configs.config_eval import ex
 
 
 def model_infer_rna(model, dataloader, args):
