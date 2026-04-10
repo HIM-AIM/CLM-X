@@ -3,7 +3,6 @@ import sys
 import dotmap
 import pickle
 # set gpu number
-# os.environ["CUDA_VISIBLE_DEVICES"] = "1"
 import torch
 import lightning as pl
 import scanpy as sc
@@ -12,17 +11,15 @@ import json
 # add code to pythonpath
 sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 from models.beitv3_pl_value import BeitForPretrain as BeitForPretrain_Value
-from cellstory.preprocess.input import (
-    prepare_rna_inference_data
 
-)
+from datamodules.datasets_pt import create_perturbation_dataset
 
 from cellstory.inference.inference_rna import rna_perturbation_metrics
 from cellstory.utils import convert_to_path
 from cellstory.logger import init_logger
 
 # import experiment
-from configs.config_eval import ex
+from configs.config_eval_test import ex
 
 
 def model_infer_rna(model, dataloader, args):
@@ -64,7 +61,7 @@ def model_infer_rna(model, dataloader, args):
             )
             # remove cls token
             rna_feats = outputs["encoder_out"]
-            rna_features = model.mlm_scorer(rna_feats)
+            rna_features = model.rna_mlm_scorer(rna_feats)
 
             for i in range(len(pert_idx)):
                 if pert_idx[i] not in rna_perturb.keys():
@@ -88,8 +85,8 @@ def rna_inference(args):
     # init logger
     logger = init_logger(args)
 
-    adata_obs, dataloader, rna_vocab_size, atac_vocab_size = prepare_rna_inference_data(
-        args
+    dataloader, rna_vocab_size, atac_vocab_size = create_perturbation_dataset(
+        args, is_train=False
     )
 
     # set vocab_size for RNA & ATAC
@@ -113,13 +110,8 @@ def rna_inference(args):
         model, dataloader,args
     )
 
-
-
     # return adata
     return rna_perturb,rna_real
-
-
-
 
 @ex.automain
 def main(_config):
@@ -142,32 +134,40 @@ def main(_config):
         os.makedirs(args_.log_dir, exist_ok=True)
 
     # Start task-specific logic
-    if args_.task == "rnamlm":
-        args_.rna_h5ad = convert_to_path(args_.rna_h5ad)
-        
+    args_.rna_h5ad = convert_to_path(args_.rna_h5ad)
 
-        logger.info("Start inference for RNA")
-        rna_perturb,rna_real = rna_inference(args_)
-        with open(os.path.join(args_.dirpath, 'rna_perturb.pkl'), 'wb') as f:
-            pickle.dump(rna_perturb, f)
-        with open(os.path.join(args_.dirpath, 'rna_real.pkl'), 'wb') as f:
-            pickle.dump(rna_real, f)
-        logger.info(f"预测结果已保存至 {os.path.join(args_.dirpath, 'rna_perturb.pkl')}")
-        logger.info(f"真实值已保存至 {os.path.join(args_.dirpath, 'rna_real.pkl')}")
-        logger.info("Finish inference for RNA")
-        logger.info("Start calculating metrics for RNA")
-        avg_mse,avg_pearson,avg_pearson_delta,avg_pearson_delta_de= rna_perturbation_metrics(args_,rna_perturb,rna_real)
-        results = {
+    logger.info("Start inference for RNA")
+    rna_perturb, rna_real = rna_inference(args_)
+
+    with open(os.path.join(args_.dirpath, 'rna_perturb.pkl'), 'wb') as f:
+        pickle.dump(rna_perturb, f)
+
+    with open(os.path.join(args_.dirpath, 'rna_real.pkl'), 'wb') as f:
+        pickle.dump(rna_real, f)
+
+    logger.info(f"Predicted results have been saved to {os.path.join(args_.dirpath, 'rna_perturb.pkl')}")
+    logger.info(f"Ground truth values have been saved to {os.path.join(args_.dirpath, 'rna_real.pkl')}")
+    logger.info("Finish inference for RNA")
+
+    logger.info("Start calculating metrics for RNA")
+    avg_mse, avg_pearson, avg_pearson_delta, avg_pearson_delta_de = rna_perturbation_metrics(
+        args_, rna_perturb, rna_real
+    )
+
+    results = {
         "avg_de20_mse": float(avg_mse),
         "avg_de20_pearson": float(avg_pearson),
-        "avg_pearson_delta": float(avg_pearson_delta), 
+        "avg_pearson_delta": float(avg_pearson_delta),
         "avg_pearson_delta_de": float(avg_pearson_delta_de)
-       }
-        print(results)
-        with open(os.path.join(args_.dirpath, 'metrics_results.json'), 'w') as f:
-            json.dump(results, f, indent=4)
-        logger.info(f"评估指标已保存至 {os.path.join(args_.dirpath, 'metrics_results.json')}")
-        logger.info("Finish calculating metrics for RNA")
+    }
+
+    print(results)
+
+    with open(os.path.join(args_.dirpath, 'metrics_results.json'), 'w') as f:
+        json.dump(results, f, indent=4)
+
+    logger.info(f"Evaluation metrics have been saved to {os.path.join(args_.dirpath, 'metrics_results.json')}")
+    logger.info("Finish calculating metrics for RNA")
       
 
 
