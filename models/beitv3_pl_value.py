@@ -79,9 +79,7 @@ def compute_auroc(y_true, y_score):
     return roc_auc_score(y_true_np, y_score_np)
 
 def compute_rmse(pred, target):
-    """
-    计算均方根误差（RMSE）
-    """
+
     return np.sqrt(np.mean((pred - target) ** 2))
 
 class ExprHead_atac(nn.Module):
@@ -208,6 +206,8 @@ class BeitForPretrain(pl.LightningModule):
         self.rna_mlm_scorer = ExprHead_rna(config.encoder_embed_dim)
         self.mix_pred_atac_mlm_scorer = ExprHead_atac(config.encoder_embed_dim,config.peak_length)
         self.mix_pred_rna_mlm_scorer = ExprHead_rna(config.encoder_embed_dim)
+        if config.batch_correction:
+            self.RNA_prediction = RNA_Decoder(config.encoder_embed_dim, config.features_dim)
         if config.translation_to_rna:
             self.RNA_prediction = RNA_Decoder(config.encoder_embed_dim, config.features_dim)
         if config.cell_type_annotation:
