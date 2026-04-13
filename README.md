@@ -6,6 +6,18 @@ This repository is the official implementation of CLM-X: A multimodal single-cel
 
 
 ## Requirements
+### Option 1: Using the Setup Script (Recommended)
+
+Run the provided setup script to automatically configure the environment:
+
+```bash
+bash setup_env.sh
+source .venv/bin/activate
+```
+
+### Option 2: Manual Installation
+
+Alternatively, you can install requirements manually:
 
 To install requirements:
 
