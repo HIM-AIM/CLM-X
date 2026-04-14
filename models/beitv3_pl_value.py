@@ -210,6 +210,8 @@ class BeitForPretrain(pl.LightningModule):
             self.RNA_prediction = RNA_Decoder(config.encoder_embed_dim, config.features_dim)
         if config.translation_to_rna:
             self.RNA_prediction = RNA_Decoder(config.encoder_embed_dim, config.features_dim)
+        if config.modality_fusion:
+            self.RNA_prediction = RNA_Decoder(config.encoder_embed_dim, config.features_dim)
         if config.cell_type_annotation:
             self.gated_fuse = GatedFusion(d_model=config.encoder_embed_dim, gate_type="scalar", dropout=0.1)
             self.classifier = nn.Linear(config.encoder_embed_dim, config.num_classes)
